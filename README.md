@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ₾ ლარის კურსი
 
-## Getting Started
+საქართველოს ეროვნული ბანკის (NBG) ოფიციალური გაცვლითი კურსი — რეალურ დროში, კალკულატორით და ისტორიით.
 
-First, run the development server:
+## სქრინშოტები
+
+### Light Mode
+![Light Mode](docs/light-mode.png)
+
+### Dark Mode
+![Dark Mode](docs/dark-mode.png)
+
+### კურსის კალკულატორი
+![Calculator](docs/calculator-10000.png)
+
+---
+
+## ფუნქციები
+
+- **ოფიციალური კურსი** — NBG API-დან ყოველ საათში განახლება
+- **კურსის კალკულატორი** — ნებისმიერი ვალუტიდან GEL-ში და პირიქით, სწრაფი ღილაკებით (100 / 500 / 1,000 / 10,000)
+- **დღის მოძრაობა (TOP 3)** — ყველაზე მეტად გამყარებული და დასუსტებული ვალუტები
+- **ფავორიტები** — მონიშნე სასურველი ვალუტები, ინახება browser-ში
+- **ყველა ვალუტა** — სრული ცხრილი ძებნით, დალაგებით და ფავორიტებად მონიშვნით
+- **Dark / Light Mode** — სისტემის პარამეტრით ან ხელით გადართვა
+
+---
+
+## ტექნოლოგიები
+
+| ტექნოლოგია | აღწერა |
+|---|---|
+| [Next.js 16](https://nextjs.org) | React framework (App Router) |
+| [React 19](https://react.dev) | UI library |
+| [Tailwind CSS v4](https://tailwindcss.com) | Utility-first CSS |
+| [shadcn/ui](https://ui.shadcn.com) | UI components |
+| [Recharts](https://recharts.org) | Chart library |
+| [next-themes](https://github.com/pacocoursey/next-themes) | Dark/light mode |
+| [date-fns](https://date-fns.org) | Date formatting |
+| [lucide-react](https://lucide.dev) | Icons |
+
+**მონაცემთა წყარო:** [NBG ოფიციალური API](https://nbg.gov.ge/gw/api/ct/monetarypolicy/currencies/ka/json)
+
+---
+
+## გაშვება
 
 ```bash
+# 1. კლონირება
+git clone https://github.com/NikTsanka/gel_exchange.git
+cd gel_exchange
+
+# 2. დამოკიდებულებების ინსტალაცია
+npm install
+
+# 3. Development სერვერის გაშვება
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+შემდეგ გახსენი [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## პროექტის სტრუქტურა
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+gel_exchange/
+├── app/
+│   ├── api/currencies/   # NBG API route
+│   ├── currency/         # ვალუტის დეტალური გვერდი
+│   ├── ClientPage.tsx    # მთავარი client component
+│   ├── page.tsx          # Server component (data fetching)
+│   ├── layout.tsx        # Root layout
+│   └── globals.css       # Global styles & theme tokens
+├── components/
+│   ├── Calculator.tsx    # კურსის კალკულატორი
+│   ├── CurrencyTable.tsx # ვალუტების ცხრილი
+│   ├── Favorites.tsx     # ფავორიტი ვალუტები
+│   ├── TopMovers.tsx     # დღის მოძრაობა
+│   ├── HistoryChart.tsx  # კურსის ისტორიის გრაფიკი
+│   └── ui/               # shadcn/ui components
+└── lib/
+    ├── types.ts          # TypeScript types
+    ├── currency-utils.ts # კონვერტაციის ლოგიკა
+    └── flags.ts          # ვალუტის დროშები
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## ლიცენზია
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
