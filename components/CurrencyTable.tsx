@@ -8,6 +8,7 @@ import { SearchBar } from "./SearchBar";
 import Link from "next/link";
 import { Copy, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useT } from "@/lib/i18n";
 
 type SortKey = "code" | "name" | "rate" | "diff";
 type SortDir = "asc" | "desc";
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export function CurrencyTable({ currencies, favorites, onToggleFavorite }: Props) {
+  const t = useT();
   const [search, setSearch] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("code");
   const [sortDir, setSortDir] = useState<SortDir>("asc");
@@ -75,22 +77,22 @@ export function CurrencyTable({ currencies, favorites, onToggleFavorite }: Props
     <div>
       <div className="flex items-center justify-between mb-4 gap-4 flex-wrap">
         <SearchBar value={search} onChange={setSearch} />
-        <p className="text-sm text-muted-foreground">{filtered.length} ვალუტა</p>
+        <p className="text-sm text-muted-foreground">{filtered.length} {t.countSuffix}</p>
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-center text-muted-foreground py-12">ვალუტა ვერ მოიძებნა</p>
+        <p className="text-center text-muted-foreground py-12">{t.notFound}</p>
       ) : (
         <div className="overflow-x-auto rounded-xl border">
-          <table className="w-full text-sm" aria-label="ვალუტის კურსები">
+          <table className="w-full text-sm" aria-label={t.tableLabel}>
             <thead className="bg-muted/50 sticky top-0 z-10">
               <tr>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide w-8"></th>
-                <SortTh label="კოდი" k="code" />
-                <SortTh label="ვალუტა" k="name" />
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide">რაოდ.</th>
-                <SortTh label="კურსი (₾)" k="rate" />
-                <SortTh label="ცვლილება" k="diff" />
+                <SortTh label={t.colCode} k="code" />
+                <SortTh label={t.colName} k="name" />
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide">{t.colQty}</th>
+                <SortTh label={t.colRate} k="rate" />
+                <SortTh label={t.colChange} k="diff" />
                 <th className="px-4 py-3 w-10"></th>
               </tr>
             </thead>
@@ -104,7 +106,7 @@ export function CurrencyTable({ currencies, favorites, onToggleFavorite }: Props
                     <button
                       onClick={() => onToggleFavorite(c.code)}
                       className={`transition-colors ${favorites.includes(c.code) ? "text-yellow-400" : "text-muted-foreground hover:text-yellow-400"}`}
-                      aria-label={favorites.includes(c.code) ? "ფავორიტიდან ამოღება" : "ფავორიტებში დამატება"}
+                      aria-label={favorites.includes(c.code) ? t.removeFav : t.addFav}
                     >
                       <Star className="h-4 w-4" fill={favorites.includes(c.code) ? "currentColor" : "none"} />
                     </button>
@@ -127,7 +129,7 @@ export function CurrencyTable({ currencies, favorites, onToggleFavorite }: Props
                       size="icon"
                       className="h-7 w-7"
                       onClick={() => copyRate(c)}
-                      aria-label="კოპირება"
+                      aria-label={t.copy}
                     >
                       <Copy className={`h-3 w-3 ${copied === c.code ? "text-green-500" : ""}`} />
                     </Button>

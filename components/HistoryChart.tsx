@@ -11,13 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Button } from "@/components/ui/button";
-
-const PERIODS = [
-  { label: "7 დღე", days: 7 },
-  { label: "30 დღე", days: 30 },
-  { label: "90 დღე", days: 90 },
-  { label: "1 წელი", days: 365 },
-];
+import { useT } from "@/lib/i18n";
 
 interface DataPoint {
   date: string;
@@ -29,6 +23,13 @@ interface Props {
 }
 
 export function HistoryChart({ code }: Props) {
+  const t = useT();
+  const PERIODS = [
+    { label: t.period7, days: 7 },
+    { label: t.period30, days: 30 },
+    { label: t.period90, days: 90 },
+    { label: t.period365, days: 365 },
+  ];
   const [days, setDays] = useState(30);
   const [data, setData] = useState<DataPoint[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,11 +63,11 @@ export function HistoryChart({ code }: Props) {
 
       {loading ? (
         <div className="h-64 flex items-center justify-center text-muted-foreground">
-          იტვირთება...
+          {t.loading}
         </div>
       ) : data.length === 0 ? (
         <div className="h-64 flex items-center justify-center text-muted-foreground">
-          მონაცემები არ არის
+          {t.noData}
         </div>
       ) : (
         <>
@@ -85,8 +86,8 @@ export function HistoryChart({ code }: Props) {
                   tickFormatter={(v) => v.toFixed(4)}
                 />
                 <Tooltip
-                  formatter={(v) => [typeof v === "number" ? `${v.toFixed(4)} ₾` : String(v), "კურსი"]}
-                  labelFormatter={(l) => `თარიღი: ${l}`}
+                  formatter={(v) => [typeof v === "number" ? `${v.toFixed(4)} ₾` : String(v), t.chartRate]}
+                  labelFormatter={(l) => `${t.chartDate} ${l}`}
                 />
                 <Line
                   type="monotone"
@@ -101,15 +102,15 @@ export function HistoryChart({ code }: Props) {
 
           <div className="grid grid-cols-3 gap-4 text-center">
             <div className="bg-muted/40 rounded-lg p-3">
-              <p className="text-xs text-muted-foreground">მინიმალური</p>
+              <p className="text-xs text-muted-foreground">{t.chartMin}</p>
               <p className="font-mono font-semibold">{min.toFixed(4)}</p>
             </div>
             <div className="bg-muted/40 rounded-lg p-3">
-              <p className="text-xs text-muted-foreground">საშუალო</p>
+              <p className="text-xs text-muted-foreground">{t.chartAvg}</p>
               <p className="font-mono font-semibold">{avg.toFixed(4)}</p>
             </div>
             <div className="bg-muted/40 rounded-lg p-3">
-              <p className="text-xs text-muted-foreground">მაქსიმალური</p>
+              <p className="text-xs text-muted-foreground">{t.chartMax}</p>
               <p className="font-mono font-semibold">{max.toFixed(4)}</p>
             </div>
           </div>

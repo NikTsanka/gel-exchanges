@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ArrowLeftRight } from "lucide-react";
+import { useT } from "@/lib/i18n";
 
 const QUICK_AMOUNTS = [100, 500, 1000, 10000];
 const GEL_OPTION = "GEL";
@@ -23,6 +24,7 @@ interface Props {
 }
 
 export function Calculator({ currencies }: Props) {
+  const t = useT();
   const [fromCode, setFromCode] = useState(GEL_OPTION);
   const [toCode, setToCode] = useState("USD");
   const [fromAmount, setFromAmount] = useState("100");
@@ -117,7 +119,7 @@ export function Calculator({ currencies }: Props) {
 
   return (
     <div className="bg-card border rounded-2xl p-6 shadow-md max-w-xl w-full mx-auto">
-      <h2 className="text-lg font-semibold mb-4">კურსის კალკულატორი</h2>
+      <h2 className="text-lg font-semibold mb-4">{t.calcTitle}</h2>
 
       <div className="flex items-center gap-3 mb-3">
         <div className="flex-1">
@@ -127,14 +129,14 @@ export function Calculator({ currencies }: Props) {
             value={fromAmount}
             onChange={(e) => handleFromAmount(e.target.value)}
             className="text-lg font-mono"
-            aria-label="საიდან"
+            aria-label={t.calcFrom}
           />
         </div>
         <CurrencySelect value={fromCode} onChange={handleFromCode} />
       </div>
 
       <div className="flex justify-center mb-3">
-        <Button variant="outline" size="icon" onClick={swap} aria-label="ვალუტების გაცვლა">
+        <Button variant="outline" size="icon" onClick={swap} aria-label={t.calcSwap}>
           <ArrowLeftRight className="h-4 w-4" />
         </Button>
       </div>
@@ -147,7 +149,7 @@ export function Calculator({ currencies }: Props) {
             value={toAmount}
             onChange={(e) => handleToAmount(e.target.value)}
             className="text-lg font-mono"
-            aria-label="სად"
+            aria-label={t.calcTo}
           />
         </div>
         <CurrencySelect value={toCode} onChange={handleToCode} />

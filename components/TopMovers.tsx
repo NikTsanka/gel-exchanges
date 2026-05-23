@@ -1,13 +1,17 @@
+"use client";
+
 import { Currency } from "@/lib/types";
 import { getFlag } from "@/lib/flags";
 import { getRatePerUnit } from "@/lib/types";
 import Link from "next/link";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   currencies: Currency[];
 }
 
 export function TopMovers({ currencies }: Props) {
+  const t = useT();
   const sorted = [...currencies].filter((c) => c.diff !== 0);
   const gainers = sorted
     .filter((c) => c.diff < 0)
@@ -43,7 +47,7 @@ export function TopMovers({ currencies }: Props) {
     <div className="grid md:grid-cols-2 gap-6">
       <div>
         <h3 className="font-semibold text-sm text-green-600 mb-3 uppercase tracking-wide">
-          ლარი გამყარდა (Top 3)
+          {t.gainers}
         </h3>
         <div className="space-y-2">
           {gainers.map((c) => (
@@ -53,7 +57,7 @@ export function TopMovers({ currencies }: Props) {
       </div>
       <div>
         <h3 className="font-semibold text-sm text-red-500 mb-3 uppercase tracking-wide">
-          ლარი დასუსტდა (Top 3)
+          {t.losers}
         </h3>
         <div className="space-y-2">
           {losers.map((c) => (

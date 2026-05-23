@@ -7,9 +7,10 @@ import { TopMovers } from "@/components/TopMovers";
 import { Favorites } from "@/components/Favorites";
 import { CurrencyTable } from "@/components/CurrencyTable";
 import { format } from "date-fns";
-import { ka } from "date-fns/locale";
+import { ka, enUS } from "date-fns/locale";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useT, useLang } from "@/lib/i18n";
 
 const DEFAULT_FAVORITES = ["USD", "EUR", "GBP", "RUB", "TRY"];
 
@@ -18,6 +19,8 @@ interface Props {
 }
 
 export function ClientPage({ initialData }: Props) {
+  const t = useT();
+  const { lang } = useLang();
   const [data, setData] = useState<NBGResponse | null>(initialData);
   const [loading, setLoading] = useState(false);
   const [favorites, setFavorites] = useState<string[]>(DEFAULT_FAVORITES);
@@ -51,15 +54,15 @@ export function ClientPage({ initialData }: Props) {
   const currencies: Currency[] = useMemo(() => data?.currencies ?? [], [data]);
 
   const formattedDate = data?.date
-    ? format(new Date(data.date), "d MMMM yyyy", { locale: ka })
+    ? format(new Date(data.date), "d MMMM yyyy", { locale: lang === "ka" ? ka : enUS })
     : "";
 
   if (!data) {
     return (
       <div className="text-center py-24">
         <p className="text-2xl mb-2">⚠️</p>
-        <p className="text-muted-foreground">კურსების ჩატვირთვა ვერ მოხერხდა</p>
-        <Button onClick={refresh} className="mt-4">სცადე თავიდან</Button>
+        <p className="text-muted-foreground">{t.errorMsg}</p>
+        <Button onClick={refresh} className="mt-4">{t.errorRetry}</Button>
       </div>
     );
   }
@@ -68,9 +71,9 @@ export function ClientPage({ initialData }: Props) {
     <div className="space-y-12">
       {/* Hero */}
       <section className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">₾ ლარის გაცვლითი კურსი</h1>
+        <h1 className="text-3xl font-bold">{t.heroTitle}</h1>
         <p className="text-muted-foreground">
-          NBG ოფიციალური კურსი — {formattedDate}
+          {t.heroSubtitle} — {formattedDate}
         </p>
         <Button
           variant="outline"
@@ -80,7 +83,7 @@ export function ClientPage({ initialData }: Props) {
           className="gap-2"
         >
           <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-          განახლება
+          {t.refresh}
         </Button>
       </section>
 
@@ -91,7 +94,7 @@ export function ClientPage({ initialData }: Props) {
 
       {/* Top Movers */}
       <section>
-        <h2 className="text-lg font-semibold mb-4">დღის მოძრაობა</h2>
+        <h2 className="text-lg font-semibold mb-4">{t.sectionMovers}</h2>
         <TopMovers currencies={currencies} />
       </section>
 
@@ -106,7 +109,7 @@ export function ClientPage({ initialData }: Props) {
 
       {/* Full Table */}
       <section>
-        <h2 className="text-lg font-semibold mb-4">ყველა ვალუტა</h2>
+        <h2 className="text-lg font-semibold mb-4">{t.sectionAll}</h2>
         <CurrencyTable
           currencies={currencies}
           favorites={favorites}

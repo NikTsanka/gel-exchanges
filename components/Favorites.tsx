@@ -4,6 +4,7 @@ import { Currency, getRatePerUnit } from "@/lib/types";
 import { getFlag } from "@/lib/flags";
 import { getDiffClass, getDiffArrow } from "@/lib/currency-utils";
 import Link from "next/link";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   currencies: Currency[];
@@ -12,19 +13,20 @@ interface Props {
 }
 
 export function Favorites({ currencies, favorites, onToggle }: Props) {
+  const t = useT();
   const favCurrencies = currencies.filter((c) => favorites.includes(c.code));
   if (favCurrencies.length === 0) return null;
 
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-4">ჩემი ვალუტები ⭐</h2>
+      <h2 className="text-lg font-semibold mb-4">{t.favTitle}</h2>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         {favCurrencies.map((c) => (
           <div key={c.code} className="bg-card border rounded-xl p-4 relative hover:shadow-md transition-shadow">
             <button
               onClick={() => onToggle(c.code)}
               className="absolute top-2 right-2 text-yellow-400 hover:text-yellow-600 transition-colors text-sm"
-              aria-label="ფავორიტიდან ამოღება"
+              aria-label={t.favRemove}
             >
               ★
             </button>

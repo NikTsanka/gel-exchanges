@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useEffect, useRef } from "react";
+import { useT } from "@/lib/i18n";
 
 interface Props {
   value: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function SearchBar({ value, onChange }: Props) {
+  const t = useT();
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -30,9 +32,9 @@ export function SearchBar({ value, onChange }: Props) {
         ref={ref}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="ძებნა... (/ სწრაფი წვდომა)"
+        placeholder={t.searchPlaceholder}
         className="pl-9"
-        aria-label="ვალუტის ძებნა"
+        aria-label={t.searchLabel}
       />
     </div>
   );
